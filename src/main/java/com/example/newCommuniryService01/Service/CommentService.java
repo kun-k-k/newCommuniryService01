@@ -21,12 +21,13 @@ public class CommentService {
 
 
     //댓글 - 추가
-    public CommentDto createComment(CommentDto commentDto, Long postId){
+    public CommentDto createComment(CommentDto commentDto, Long postId, Long sessionUserId){
 
 
-        commentDto.toDomain();
+        //세션 매치해서 가져온 userId 할당
+        commentDto.setUserId(sessionUserId);
+
         commentRepository.save(commentDto.toDomain(), postId);
-
         return null;
     }
 
@@ -37,9 +38,8 @@ public class CommentService {
 
 
 
-
         //접근 권한 필터링
-        if(!sessionUserId.equals(commentRepository.getUserId(postId))){
+        if(!sessionUserId.equals(commentRepository.getUserId(commentId))){
             return true;
         }
 
@@ -58,8 +58,17 @@ public class CommentService {
 
 
     //댓글 - 삭제
-    public void deleteComment(Long commentId){
+    public Boolean deleteComment(Long postId, Long commentId, Long sessionUserId){
+
+
+        //접근 권한 필터링
+        if(!sessionUserId.equals(commentRepository.getUserId(commentId))){
+            return true;
+        }
+
         commentRepository.delete(commentId);
+
+        return false;
     }
 
 

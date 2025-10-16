@@ -19,6 +19,9 @@ public class PostMemoryRepository implements PostRepository{
     private static Map<Long, PostDomain> dbMap = new HashMap<>();
     private static Long sequence = 0L;
 
+
+
+
     @Override
     public PostDomain save(PostDomain postDomain) {
 
@@ -27,6 +30,8 @@ public class PostMemoryRepository implements PostRepository{
 
         return postDomain;
     }
+
+
 
     @Override
     public Map<Long, PostDomain> findAll(String page, Long size) {

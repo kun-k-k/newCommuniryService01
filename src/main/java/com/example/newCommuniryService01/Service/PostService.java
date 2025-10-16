@@ -33,10 +33,10 @@ public class PostService {
 
 
     //게시글 - 추가
-    public PostDto createPost(PostDto postDto, Long userId){
+    public PostDto createPost(PostDto postDto, Long sessionUserId){
 
-        //세션에서 가져온 userId 할당
-        postDto.setUserId(userId);
+        //세션 매치해서 가져온 userId 할당
+        postDto.setUserId(sessionUserId);
 
         PostDomain postDomain = postDto.toDomain();
         return (postRepository.save(postDomain)).toDto();

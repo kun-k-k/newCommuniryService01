@@ -54,7 +54,7 @@ public class CommentController {
             return new ResponseDto("로그인이 필요합니다");
         }
 
-        commentService.createComment(commentDto, postId);
+        commentService.createComment(commentDto, postId, sessionUserId);
 
 
         return new ResponseDto("post_success");
@@ -88,17 +88,19 @@ public class CommentController {
     @DeleteMapping("posts/{postId}/comments/{commentId}")
     public ResponseDto deletecomment(
             @PathVariable Long postId,
-            @PathVariable Long commentId
+            @PathVariable Long commentId,
+            HttpServletRequest request
     ){
 
 
+        Long sessionUserId = getSessionUserId(request);
 
-        commentService.deleteComment(commentId);
+        //접근 권한 필터링
+        if(commentService.deleteComment(postId, commentId, sessionUserId)){
+            return new ResponseDto("접근 권한이 없습니다."); // -> 상태코드로 처리 필요
+        }
 
-        ResponseDto responseDto = new ResponseDto("delete_success");
-
-
-        return responseDto;
+        return new ResponseDto("delete_success");
 
 
     }

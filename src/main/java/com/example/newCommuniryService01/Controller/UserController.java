@@ -43,15 +43,7 @@ public class UserController {
         //Dto객체 전달
         UserDto userDtoSaved = userService.signUp(userDto);
 
-        /*
-        UserDto userDtoSaved2 = userService.signUp(userDto);
 
-        List<UserDto> dtoList = new ArrayList<>();
-
-        dtoList.add(userDtoSaved);
-        dtoList.add(userDtoSaved2);
-
-         */
 
         return new ResponseDto("post_success");
 
