@@ -17,3 +17,4 @@ public class PostPageDto extends DataDto {
     //Boolean liked = false;
 
 }
+

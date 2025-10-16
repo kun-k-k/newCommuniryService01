@@ -22,6 +22,7 @@ public class AuthService {
 
 
 
+
         UserDomain userDomainGotten = userRepository.findByEmail(userDto.getEmail());
 
         //이메일 못찾음

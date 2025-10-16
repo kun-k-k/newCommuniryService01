@@ -29,6 +29,7 @@ public interface PostRepository {
 
 
 
+
     /*
 
     게시글 추가 () / userId

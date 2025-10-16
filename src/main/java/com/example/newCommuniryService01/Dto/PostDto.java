@@ -10,6 +10,7 @@ import lombok.Setter;
 public class PostDto {
 
 
+
     private Long id = 0L;
     private Long userId = 0L;
     private String author = "";

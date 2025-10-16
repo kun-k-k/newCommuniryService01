@@ -16,3 +16,4 @@ public class PostListDto extends DataDto{
     }
 
 }
+

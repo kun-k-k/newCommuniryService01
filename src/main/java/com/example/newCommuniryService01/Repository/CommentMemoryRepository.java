@@ -59,6 +59,7 @@ public class CommentMemoryRepository implements CommentRepository{
 
 
 
+
     //commentId로 userId 가져오기
     public Long getUserId(Long commentId){
 

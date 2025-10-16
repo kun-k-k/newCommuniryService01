@@ -31,6 +31,7 @@ public class UserMemoryRepository implements UserRepository{
         return userDomain;
     }
 
+
     //id로 회원 조회
     public UserDomain findById(Long userId){
 

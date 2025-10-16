@@ -36,6 +36,7 @@ public class PostDomain {
 
     }
 
+
     public PostDto toDto(){
 
         PostDto postDto

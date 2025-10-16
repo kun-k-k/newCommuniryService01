@@ -22,6 +22,7 @@ public class UserDomain {
     }
 
 
+
     //Domain - Dto 변환
     /*
     toDto 전용 클래스 -> toDto작업 추상화 가능? (user,post,comment 객체들)
