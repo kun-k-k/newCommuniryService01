@@ -77,7 +77,7 @@ public class PostController {
 
 
         //System.out.println(postDtoList);
-        return responseDto; //코드 회고: dto클래스 private필드인데 getter없으면 json자동변환 과정에서 바인딩 오류 뜸
+        return responseDto; //회고: dto클래스 private필드인데 getter없으면 json자동변환 과정에서 바인딩 오류 뜸
 
 
     }

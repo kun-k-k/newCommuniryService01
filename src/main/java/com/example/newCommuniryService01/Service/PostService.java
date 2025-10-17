@@ -94,7 +94,7 @@ public class PostService {
             return true;
         }
 
-        //메인 수정작업 (-> 도메인과 Dto객체 내부 메서드 - PUT에서 PATCH로 수정 필요)
+        //메인 수정작업 (-> 회고: 도메인과 Dto객체 내부 메서드 - PUT에서 PATCH로 수정 필요)
         postDto.setId(postId);
         postDto.setUserId(postRepository.findById(postId).getUserId());
         postDto.setAuthor(postRepository.findById(postId).getAuthor());

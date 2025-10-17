@@ -44,7 +44,7 @@ public class CommentService {
             return true;
         }
 
-        //코드 회고: Patch메서드인데 필드 값 전체를 변경하는 Put으로 구현함 -> 수정 마다 postId 재할당 해야됨
+        //코드 회고: Patch메서드인데 필드 값 전체를 변경하는 Put으로 구현함 -> 수정 마다 postId 재할당 해야됨 (수정 필요)
         commentDto.setPostId(postId);
         //
         commentDto.setId(commentId);

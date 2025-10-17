@@ -33,7 +33,7 @@ public class CommentMemoryRepository implements CommentRepository{
 
         for(CommentDomain commentDomain : dbMap.values()){
             if(commentDomain.getPostId().equals(postId)){
-                //고려: dto 필터링을 리포지토리 계층에서 침범해도 되는가 (for 코드 절약)
+                //회고: dto 필터링을 리포지토리 계층에서 침범해도 되는가 (for 코드 절약)
                 CommentDto commentDto = commentDomain.toDto();
                 commentDtoList.add(commentDto);
             }
