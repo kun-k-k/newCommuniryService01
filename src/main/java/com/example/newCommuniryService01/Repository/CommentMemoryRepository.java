@@ -20,20 +20,19 @@ public class CommentMemoryRepository implements CommentRepository{
     private static Long sequence = 0L;
 
 
-    @Override
-    public Map<Long, CommentDomain> viewPosts(String page, Long size) {
-
-        return this.dbMap;
-    }
 
 
+    // 상세조회 - 댓글 리스트 반환 (메서드 명 getCommentList로 변경하기)
     public List<CommentDto> listingComment(Long postId){
 
         List<CommentDto> commentDtoList = new ArrayList<>();
 
         for(CommentDomain commentDomain : dbMap.values()){
             if(commentDomain.getPostId().equals(postId)){
-                //회고: dto 필터링을 리포지토리 계층에서 침범해도 되는가 (for 코드 절약)
+                /*회고: 도메인 객체 조회 시의 필터링 로직을 리포지토리 계층에서 침범해도 되는가 (코드 중복 줄이기 위해서)
+                    => 해결: 리포 역할상 '데이터 전체' 전달만 하고 [리스트화, 필터링 로직]은 서비스에서 한꺼번에 수행
+                 */
+
                 CommentDto commentDto = commentDomain.toDto();
                 commentDtoList.add(commentDto);
             }
@@ -94,4 +93,26 @@ public class CommentMemoryRepository implements CommentRepository{
         dbMap.remove(commentId);
         return null;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+    //폐기처분
+    @Override
+    public Map<Long, CommentDomain> viewPosts(String page, Long size) {
+
+        return this.dbMap;
+    }
+
+
 }
+
+
