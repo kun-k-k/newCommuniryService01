@@ -47,11 +47,13 @@ public class PostController {
         //로그인 여부 필터링
         if(sessionUserId == null){
             return new ResponseDto("로그인이 필요합니다");
+        }else if(postDto.validation()){
+            return new ResponseDto("유효한 데이터를 입력해주세요");
+        }else {
+            postService.createPost(postDto, sessionUserId);
+            return new ResponseDto("post_success");
         }
 
-        postService.createPost(postDto, sessionUserId);
-
-        return new ResponseDto("post_success");
 
 
     }
@@ -107,7 +109,6 @@ public class PostController {
 
 
 
-    // ---------ccc
 
 
 

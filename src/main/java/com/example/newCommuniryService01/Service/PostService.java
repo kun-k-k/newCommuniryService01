@@ -38,6 +38,8 @@ public class PostService {
         //세션 매치해서 가져온 userId 할당
         postDto.setUserId(sessionUserId);
 
+        //정책 - 제목,내용은 필수입니다
+
         PostDomain postDomain = postDto.toDomain();
         return (postRepository.save(postDomain)).toDto();
 
@@ -99,7 +101,19 @@ public class PostService {
         postDto.setUserId(postRepository.findById(postId).getUserId());
         postDto.setAuthor(postRepository.findById(postId).getAuthor());
         //
-        PostDomain postDomain = postRepository.update(postDto.toDomain(), postId);
+        postRepository.update(postDto.toDomain(), postId);
+
+
+        //PATCH화
+        /*
+        1) Dto객체(3상태) 겟 - 변경된 필드 파악
+        2) 리포에서 도메인 객테 겟 - 세터로 일부 필드 셋 후 리포 저장
+
+         */
+
+
+
+
 
         return false;
 

@@ -35,7 +35,25 @@ public class PostDto {
 
     }
 
+
+
+    //유효성 검사
+    public Boolean validation(){
+
+        if(this.title == null){
+            return true;
+        }
+
+        return false;
+    }
+
+
+
+
+
+
     public PostDomain toDomain(){
+
 
         PostDomain postDomain
                 = new PostDomain(
@@ -47,6 +65,14 @@ public class PostDto {
         );
         return postDomain;
     }
+
+
+
+
+
+
+
+
 
 
 }
