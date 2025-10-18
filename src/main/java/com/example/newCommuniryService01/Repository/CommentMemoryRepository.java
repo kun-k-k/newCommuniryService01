@@ -23,6 +23,7 @@ public class CommentMemoryRepository implements CommentRepository{
 
 
     // 상세조회 - 댓글 리스트 반환 (메서드 명 getCommentList로 변경하기)
+        //-> findAll 메서드로 변경하기
     public List<CommentDto> listingComment(Long postId){
 
         List<CommentDto> commentDtoList = new ArrayList<>();
