@@ -23,6 +23,7 @@ public class PostController {
 
 
     //클라 세션 - userId 겟
+    //보완: 'getSessionUserId' 메서드 중복 해결 -> 인증 담당 auth라인에서 처리하기
     private Long getSessionUserId(HttpServletRequest request) {
 
         HttpSession session = request.getSession(false);
