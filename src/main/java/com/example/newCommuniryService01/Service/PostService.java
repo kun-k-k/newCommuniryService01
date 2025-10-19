@@ -38,7 +38,6 @@ public class PostService {
         //세션 매치해서 가져온 userId 할당
         postDto.setUserId(sessionUserId);
 
-        //정책 - 제목,내용은 필수입니다
 
         PostDomain postDomain = postDto.toDomain();
         return (postRepository.save(postDomain)).toDto();
@@ -86,6 +85,24 @@ public class PostService {
     }
 
 
+
+    //게시글 - 수정 (전략패턴)
+    public Boolean updatePostStrategy(PostDto postDto, Long postId, Long sessionUserId){
+
+
+
+        return false;
+    }
+
+
+
+
+
+
+
+
+
+
     //게시글 - 수정
     public Boolean updatePost(PostDto postDto, Long postId, Long sessionUserId){
 
@@ -119,6 +136,16 @@ public class PostService {
 
 
     }
+
+
+
+
+
+
+
+
+
+
 
 
 

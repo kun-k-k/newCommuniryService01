@@ -45,6 +45,7 @@ public class PostController {
 
 
         //로그인 여부 필터링
+        //보완: ㄴ> create 정책 = 서비스에서 담당하기
         if(sessionUserId == null){
             return new ResponseDto("로그인이 필요합니다");
         }else if(postDto.validation()){
