@@ -1,6 +1,8 @@
 package com.example.newCommuniryService01.Strategy.Policy;
 
 import com.example.newCommuniryService01.Dto.PostDto;
+import com.example.newCommuniryService01.Dto.PostListDto;
+import com.example.newCommuniryService01.Dto.PostPageDto;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -9,8 +11,18 @@ public interface PostPolicy {
 
     public Boolean matchStrategy(Long sessionUserId);
 
-    public PostDto updatePost(PostDto postDto);
 
+
+    //추가
+    public PostDto createPost(PostDto postDto, Long sessionUserId);
+
+    //전체 조회, 상세 조회
+    public PostListDto viewPosts(String page, Long size);
+    public PostPageDto viewOnePost(Long postId, Long sessionUserId);
+
+    //수정, 삭제
+    public Boolean updatePost(PostDto postDto, Long postId, Long sessionUserId);
+    public Boolean deletePost(Long postId, Long sessionUserId);
 
 
 

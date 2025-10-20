@@ -10,15 +10,19 @@ public class UserDomain {
 
 
     private Long id = 0L;
+    
     private String userName;
     private String email;
     private String passWord;
 
+    private Boolean adminYN = false;
 
-    public UserDomain(String userName, String email, String passWord){
+
+    public UserDomain(String userName, String email, String passWord, Boolean adminYN){
         this.userName = userName;
         this.email = email;
         this.passWord = passWord;
+        this.adminYN = adminYN;
     }
 
 
@@ -31,7 +35,8 @@ public class UserDomain {
         return new UserDto(
                 this.userName,
                 this.email,
-                null
+                null,
+                this.adminYN
         );
     }
 

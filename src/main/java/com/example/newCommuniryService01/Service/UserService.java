@@ -19,6 +19,7 @@ public class UserService {
     }
 
     //유저 - 회원가입
+    //-> 유저 종류별 분기 필요
     public UserDto signUp(UserDto userDto){
 
         //1) Dto -> Domain 변환

@@ -11,17 +11,21 @@ import org.springframework.validation.BindException;
 public class UserDto {
 
     private Long id;
+
     private String userName;
     private String email;
     private String passWord;
 
+    private Boolean adminYN;
 
 
-    public UserDto(String userName, String email, String passWord){
+
+    public UserDto(String userName, String email, String passWord, Boolean adminYN){
         this.userName = userName;
-
         this.email = email;
         this.passWord = passWord;
+
+        this.adminYN = adminYN;
     }
 
 
@@ -31,9 +35,10 @@ public class UserDto {
     public UserDomain toDomain() {
         return new UserDomain(
                 this.userName,
-
                 this.email,
-                this.passWord
+                this.passWord,
+
+                this.adminYN
         );
     }
 

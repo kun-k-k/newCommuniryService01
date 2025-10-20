@@ -8,6 +8,7 @@ import com.example.newCommuniryService01.Dto.PostListDto;
 import com.example.newCommuniryService01.Dto.PostPageDto;
 import com.example.newCommuniryService01.Repository.CommentRepository;
 import com.example.newCommuniryService01.Repository.PostRepository;
+import com.example.newCommuniryService01.Strategy.Policy.PostPolicy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,16 +16,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+
 @Service
 public class PostService {
 
     private PostRepository postRepository;
     private CommentRepository commentRepository;
+    private List<PostPolicy> policyStrategies;
 
+
+    //점검: @AW -> List<PostPolicy>
     @Autowired
-    PostService(PostRepository postRepository, CommentRepository commentRepository){
+    PostService(PostRepository postRepository, CommentRepository commentRepository, List<PostPolicy> policyStrategies){
         this.postRepository = postRepository;
         this.commentRepository = commentRepository;
+        this.policyStrategies = policyStrategies;
     }
 
 
@@ -32,15 +38,39 @@ public class PostService {
 
 
 
+    //전략매칭 공통 메서드
+    //회고: 널포인트 예외 체크 (매칭되는 전략 못찾으면 예외터짐)
+    public PostPolicy getStrategy(Long sessionUserId){
+
+        for(PostPolicy policyStrategy : policyStrategies) {
+            if (policyStrategy.matchStrategy(sessionUserId)) {
+                return policyStrategy;
+            }
+        }
+
+        return null;
+    }
+
+
+
+
+
     //게시글 - 추가
+    //부여할 조회권한별 분기 필요 (관리자에게만, 로그인에게만, 모두에게, +나에게만) => dto단에서 열거형으로 처리
     public PostDto createPost(PostDto postDto, Long sessionUserId){
 
+
+        /* (전략패턴 적용전 버전)
         //세션 매치해서 가져온 userId 할당
         postDto.setUserId(sessionUserId);
 
 
         PostDomain postDomain = postDto.toDomain();
         return (postRepository.save(postDomain)).toDto();
+
+         */
+
+        return getStrategy(sessionUserId).createPost(postDto, sessionUserId);
 
     }
 
@@ -65,8 +95,10 @@ public class PostService {
 
 
     //게시글 - 상세조회
-    public PostPageDto viewOnePost(Long postId){
+    public PostPageDto viewOnePost(Long postId, Long sessionUserId){
 
+
+        /* (전략패턴 적용전 버전)
 
         //게시글 객체 겟
         PostDomain postDomain = postRepository.findById(postId);
@@ -82,22 +114,15 @@ public class PostService {
 
 
         return postPageDto;
+
+         */
+
+
+        //보완 여지: 권한과 관련된 요소들(전략 매칭, 권한 필터링)은 auth라인에서 처리하고 post라인에서 가져다 쓰도록 수정?
+        return getStrategy(sessionUserId).viewOnePost(postId, sessionUserId);
+
+
     }
-
-
-
-    //게시글 - 수정 (전략패턴)
-    public Boolean updatePostStrategy(PostDto postDto, Long postId, Long sessionUserId){
-
-
-
-        return false;
-    }
-
-
-
-
-
 
 
 
@@ -129,20 +154,10 @@ public class PostService {
          */
 
 
-
-
-
         return false;
 
 
     }
-
-
-
-
-
-
-
 
 
 

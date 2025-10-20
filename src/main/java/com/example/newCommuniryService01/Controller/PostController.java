@@ -44,9 +44,8 @@ public class PostController {
 
         Long sessionUserId = getSessionUserId(request);
 
-
         //로그인 여부 필터링
-        //보완: ㄴ> create 정책 = 서비스에서 담당하기
+        //보완: ㄴ> create 정책 = 서비스에서 담당해야.
         if(sessionUserId == null){
             return new ResponseDto("로그인이 필요합니다");
         }else if(postDto.validation()){
@@ -93,11 +92,18 @@ public class PostController {
     //게시글 - 상세조회
     @GetMapping("posts/{postId}")
     public ResponseDto viewOnePost(
-            @PathVariable Long postId
+            @PathVariable Long postId,
+            HttpServletRequest request
     ){
 
+        Long sessionUserId = getSessionUserId(request);
 
-        PostPageDto postPageDto = postService.viewOnePost(postId);
+        PostPageDto postPageDto = postService.viewOnePost(postId, sessionUserId);
+
+        //권한 필터링
+        if(postPageDto == null){
+            return new ResponseDto("접근 권한이 없습니다");
+        }
 
         ResponseDto responseDto = new ResponseDto(postPageDto);
         responseDto.setMessage("success");
