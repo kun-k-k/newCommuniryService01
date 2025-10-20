@@ -41,7 +41,12 @@ public class PostLoginModePolicy implements PostPolicy{
         return false;
     }
 
-    //추가
+
+
+
+
+
+    //추가 (일반유저용 추가 작업)
     @Override
     public PostDto createPost(PostDto postDto, Long sessionUserId) {
         //세션 매치해서 가져온 userId 할당
@@ -60,11 +65,14 @@ public class PostLoginModePolicy implements PostPolicy{
     }
 
 
+
+
     //상세조회
     @Override
     public PostPageDto viewOnePost(Long postId, Long sessionUserId){
 
-        //필터링 조건문 임시
+
+        //보완: 반환값 false도 가능하게 Object로 설정 후 필터링 조건문 일관화
         if(!postRepository.findById(postId).getAdminOnly()){
             //게시글 객체 겟
             PostDomain postDomain = postRepository.findById(postId);
@@ -92,14 +100,37 @@ public class PostLoginModePolicy implements PostPolicy{
     @Override
     public Boolean updatePost(PostDto postDto, Long postId, Long sessionUserId){
 
+        //접근 권한 필터링
+        if(postRepository.findById(postId).getAdminOnly()){
+            return true; //adminOnly일 경우 true 반환 (접근 불가)
+        }
+
+        //메인 수정작업 (-> 도메인과 Dto객체 내부 메서드 - PUT에서 PATCH로 수정 필요)
+        postDto.setId(postId);
+        postDto.setUserId(postRepository.findById(postId).getUserId());
+        postDto.setAuthor(postRepository.findById(postId).getAuthor());
+        //
+        postRepository.update(postDto.toDomain(), postId);
 
 
-        return null;
+        return false;
+
+
     }
     //삭제
     @Override
     public Boolean deletePost(Long postId, Long sessionUserId) {
-        return null;
+
+        //접근 권한 필터링
+        if(postRepository.findById(postId).getAdminOnly()){
+            return true;
+        }
+
+        //메인 삭제작업
+        PostDomain postDomain = postRepository.delete(postId);
+
+        return false;
+
     }
 
 }

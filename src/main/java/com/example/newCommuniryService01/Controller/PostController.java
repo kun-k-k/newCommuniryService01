@@ -55,8 +55,6 @@ public class PostController {
             return new ResponseDto("post_success");
         }
 
-
-
     }
 
 
@@ -70,8 +68,6 @@ public class PostController {
             @RequestParam(required = true, defaultValue = "5") Long size
     ){
 
-
-
         PostListDto postListDto = postService.viewPosts(page, size);
 
 
@@ -80,7 +76,7 @@ public class PostController {
 
 
         //System.out.println(postDtoList);
-        return responseDto; //회고: dto클래스 private필드인데 getter없으면 json자동변환 과정에서 바인딩 오류 뜸
+        return responseDto; //회고: dto클래스 private필드인데 getter없어서 json자동변환 과정에서 바인딩 오류 뜸
 
 
     }

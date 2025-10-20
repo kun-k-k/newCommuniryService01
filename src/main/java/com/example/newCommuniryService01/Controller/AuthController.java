@@ -32,8 +32,9 @@ public class AuthController {
         2) 고유 세션ID 발급 - (쿠키로)전송
 
         3) (쿠키로) 클라가 보낸 세션ID - 세션 객체에서 조회 > 유저ID
-
          */
+
+
 
         //로그인 검증 - userId 겟
         Long userIdGotten = authService.signIn(userDto);

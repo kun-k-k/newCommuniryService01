@@ -11,7 +11,10 @@ import com.example.newCommuniryService01.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
 
 @Component
 public class PostAdminModePolicy implements PostPolicy{
@@ -44,21 +47,23 @@ public class PostAdminModePolicy implements PostPolicy{
 
 
 
-    //추가: 포스트 도메인 adminOnly필드 값 추가 (-> adminOnly추가기준 정책로직 더하기 (일반유저가 '관리자용'으로 작성 가능하도록)
+    //추가: 포스트 도메인 adminOnly필드 값 추가 (-> 보완: adminOnly추가기준 정책로직 더하기 (일반유저가 '관리자용'으로 작성 가능하도록)
     @Override
     public PostDto createPost(PostDto postDto, Long sessionUserId) {
 
-
         //세션 매치해서 가져온 userId 할당
         postDto.setUserId(sessionUserId);
+        //관리자용 setAdminOnly작업
         postDto.setAdminOnly(true);
 
 
         PostDomain postDomain = postDto.toDomain();
         return (postRepository.save(postDomain)).toDto();
 
-
     }
+
+
+
 
 
 
@@ -78,7 +83,7 @@ public class PostAdminModePolicy implements PostPolicy{
 
         //보완: 열거형 필드 추가 후 수정하기 -> if(postRepository.findById(postId).getUserKind.equals("admin")
 
-        //필터링 = '검증' -> '맞으면' 실행 (Not '아니면') [=> True or False]
+        //필터링 = '검증' -> '맞으면' 실행 (Not '찾으면') [=> True or False]
         if(postRepository.findById(postId).getAdminOnly()){
             //게시글 객체 겟
             PostDomain postDomain = postRepository.findById(postId);
@@ -107,10 +112,10 @@ public class PostAdminModePolicy implements PostPolicy{
     public Boolean updatePost(PostDto postDto, Long postId, Long sessionUserId){
 
 
-        //필터링 = '검증' -> '맞으면' 실행 (Not '아니면') [=> True or False]
+        //필터링 = '검증' -> '아니면' 실행 (Not '찾으면') [=> True or False]
         //접근 권한 필터링
-        if(postRepository.findById(postId).getAdminOnly()){
-            return true;
+        if(!postRepository.findById(postId).getAdminOnly()){
+            return true; //adminOnly아닐 경우 true 반환 (접근 불가)
         }
 
         //메인 수정작업 (-> 도메인과 Dto객체 내부 메서드 - PUT에서 PATCH로 수정 필요)
@@ -121,15 +126,6 @@ public class PostAdminModePolicy implements PostPolicy{
         postRepository.update(postDto.toDomain(), postId);
 
 
-        //PATCH화
-        /*
-        1) Dto객체(3상태) 겟 - 변경된 필드 파악
-        2) 리포에서 도메인 객테 겟 - 세터로 일부 필드 셋 후 리포 저장
-
-         */
-
-
-
         return false;
 
 
@@ -138,7 +134,19 @@ public class PostAdminModePolicy implements PostPolicy{
     //삭제
     @Override
     public Boolean deletePost(Long postId, Long sessionUserId) {
-        return null;
+
+
+        //접근 권한 필터링
+        if(!postRepository.findById(postId).getAdminOnly()){
+            return true;
+        }
+
+        //메인 삭제작업
+        PostDomain postDomain = postRepository.delete(postId);
+
+        return false;
+
+
     }
 
 }

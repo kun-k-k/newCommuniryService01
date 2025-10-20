@@ -35,11 +35,8 @@ public class PostService {
 
 
 
-
-
-
     //전략매칭 공통 메서드
-    //회고: 널포인트 예외 체크 (매칭되는 전략 못찾으면 예외터짐)
+    //코드실수: 널포인트 예외 체크 (매칭되는 전략 못찾으면 예외터짐)
     public PostPolicy getStrategy(Long sessionUserId){
 
         for(PostPolicy policyStrategy : policyStrategies) {
@@ -54,11 +51,9 @@ public class PostService {
 
 
 
-
     //게시글 - 추가
     //부여할 조회권한별 분기 필요 (관리자에게만, 로그인에게만, 모두에게, +나에게만) => dto단에서 열거형으로 처리
     public PostDto createPost(PostDto postDto, Long sessionUserId){
-
 
         /* (전략패턴 적용전 버전)
         //세션 매치해서 가져온 userId 할당
@@ -76,27 +71,26 @@ public class PostService {
 
 
 
+    //전략패턴 미적용 (전략무관 동일 응답)
     //게시글 - 전체조회
     public PostListDto viewPosts(String page, Long size){
 
         Map<Long, PostDomain> postDbMap = postRepository.findAll(page, size);
-
         List<PostDto> postDtoList = new ArrayList<>();
-
 
         for (PostDomain postDomain : postDbMap.values()) {
             PostDto postDto = postDomain.toDto();
             postDtoList.add(postDto);
         }
-
         return new PostListDto(postDtoList);
-
     }
+
+
+
 
 
     //게시글 - 상세조회
     public PostPageDto viewOnePost(Long postId, Long sessionUserId){
-
 
         /* (전략패턴 적용전 버전)
 
@@ -117,10 +111,8 @@ public class PostService {
 
          */
 
-
         //보완 여지: 권한과 관련된 요소들(전략 매칭, 권한 필터링)은 auth라인에서 처리하고 post라인에서 가져다 쓰도록 수정?
         return getStrategy(sessionUserId).viewOnePost(postId, sessionUserId);
-
 
     }
 
@@ -131,8 +123,7 @@ public class PostService {
     //게시글 - 수정
     public Boolean updatePost(PostDto postDto, Long postId, Long sessionUserId){
 
-
-
+        /* 전략패턴 적용전 버전
         //접근 권한 필터링
         if(!sessionUserId.equals(postRepository.getUserId(postId))){
             return true;
@@ -146,16 +137,17 @@ public class PostService {
         postRepository.update(postDto.toDomain(), postId);
 
 
+        return false;
+
+         */
+
+        return getStrategy(sessionUserId).updatePost(postDto, postId, sessionUserId);
+
         //PATCH화
         /*
         1) Dto객체(3상태) 겟 - 변경된 필드 파악
         2) 리포에서 도메인 객테 겟 - 세터로 일부 필드 셋 후 리포 저장
-
          */
-
-
-        return false;
-
 
     }
 
@@ -167,7 +159,7 @@ public class PostService {
     //게시글 - 삭제
     public Boolean deletePost(Long postId, Long sessionUserId){
 
-
+        /* 전략패턴 적용전 버전
         //접근 권한 필터링
         if(!sessionUserId.equals(postRepository.getUserId(postId))){
             return true;
@@ -178,6 +170,9 @@ public class PostService {
 
         return false;
 
+         */
+
+        return getStrategy(sessionUserId).deletePost(postId, sessionUserId);
 
 
     }
