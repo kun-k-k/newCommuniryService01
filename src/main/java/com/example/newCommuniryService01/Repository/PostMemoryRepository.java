@@ -25,6 +25,7 @@ public class PostMemoryRepository implements PostRepository{
     @Override
     public PostDomain save(PostDomain postDomain) {
 
+        //피드백, 보완: 동시성 문제 대처
         postDomain.setId(++sequence);
         dbMap.put(postDomain.getId(), postDomain);
 

@@ -36,7 +36,7 @@ public class PostService {
 
 
     //전략매칭 공통 메서드
-    //코드실수: 널포인트 예외 체크 (매칭되는 전략 못찾으면 예외터짐)
+    //코드체크: 널포인트 예외 체크 (매칭되는 전략 못찾으면 예외터짐)
     public PostPolicy getStrategy(Long sessionUserId){
 
         for(PostPolicy policyStrategy : policyStrategies) {

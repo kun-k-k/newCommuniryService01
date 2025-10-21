@@ -46,6 +46,8 @@ public class UserMemoryRepository implements UserRepository{
     @Override
     public UserDomain findByEmail(String email) {
 
+
+        //피드백, 보완: 순회 성능 문제 개선
         for(UserDomain userDomain : dbMap.values()){
             if(userDomain.getEmail().equals(email)){
                 return userDomain;
